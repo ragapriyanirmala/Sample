@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Sample.Datahub;
+using Sample.Datahub.Models.Domain;
+using Sample.Datahub.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<SampleDbContext>(options => 
 options.UseSqlServer(builder.Configuration.GetConnectionString("SampleConnectionString")));
+builder.Services.AddTransient<IEmployeeData, EmployeeData>();
+builder.Services.AddTransient<IBranchData, BranchData>();
+builder.Services.AddTransient<ITeamData, TeamData>();
 
 var app = builder.Build();
 
