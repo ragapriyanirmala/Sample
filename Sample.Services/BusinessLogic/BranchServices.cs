@@ -38,7 +38,6 @@ namespace Sample.Services.BusinessLogic
                 BranchImageUrl = branchdata.BranchImageUrl
             };
             return branch;
-
         }
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Sample.Datahub;
 using Sample.Datahub.Models.Domain;
 using Sample.Datahub.Repository;
+using Sample.Services.BusinessLogic;
 
 var builder = WebApplication.CreateBuilder(args);
 
