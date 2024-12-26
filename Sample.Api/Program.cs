@@ -3,6 +3,7 @@ using Sample.Datahub;
 using Sample.Datahub.Models.Domain;
 using Sample.Datahub.Repository;
 using Sample.Services.BusinessLogic;
+using Sample.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,9 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("SampleConnection
 builder.Services.AddTransient<IEmployeeData, EmployeeData>();
 builder.Services.AddTransient<IBranchData, BranchData>();
 builder.Services.AddTransient<ITeamData, TeamData>();
+builder.Services.AddTransient<IEmployeeServices, EmployeeServices>();
+builder.Services.AddTransient<ITeamServices,TeamServices>();
+builder.Services.AddTransient<IBranchServices, BranchServices>();
 
 var app = builder.Build();
 
