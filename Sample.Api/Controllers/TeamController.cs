@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Sample.Datahub.Models.Domain;
 using Sample.Services.BusinessLogic;
+using Sample.Services.DTOs;
 using Sample.Services.Interfaces;
 
 namespace Sample.Api.Controllers
@@ -26,6 +27,12 @@ namespace Sample.Api.Controllers
         {
             var team = _teamServices.GetById(id);
             return Ok(team);
+        }
+        [HttpPost]
+        public IActionResult Create([FromBody] AddTeamDTO request)
+       {
+            var response = _teamServices.Create(request);
+            return CreatedAtAction(nameof(GetById), new { id = response.Id },response);
         }
     }
 }

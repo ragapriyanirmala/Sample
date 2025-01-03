@@ -1,4 +1,5 @@
-﻿using Sample.Datahub.Repository;
+﻿using Sample.Datahub.Models.Domain;
+using Sample.Datahub.Repository;
 using Sample.Services.DTOs;
 using Sample.Services.Interfaces;
 
@@ -34,6 +35,20 @@ namespace Sample.Services.BusinessLogic
                 Name = teamdata.Name
             };
             return team;
+        }
+        public TeamDTO Create(AddTeamDTO input)
+        {
+            var team = new Team()
+            {
+                Name = input.Name
+            };
+            team = _data.Create(team);
+            var output = new TeamDTO()
+            {
+                Id = team.Id,
+                Name = team.Name
+            };
+            return output;
         }
     }
 }

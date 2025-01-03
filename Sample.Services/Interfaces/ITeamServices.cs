@@ -6,5 +6,6 @@ namespace Sample.Services.Interfaces
     {
         List<TeamDTO> Get();
         TeamDTO GetById(Guid id);
+        TeamDTO Create(AddTeamDTO input);
     }
 }

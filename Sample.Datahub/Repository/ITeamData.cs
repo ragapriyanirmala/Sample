@@ -6,5 +6,6 @@ namespace Sample.Datahub.Repository
     {
         List<Team> Get();
         Team GetById(Guid id);
+        Team Create(Team team);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Sample.Datahub.Repository
 {
-    public class TeamData:ITeamData
+    public class TeamData : ITeamData
     {
         private readonly SampleDbContext _context;
         public TeamData(SampleDbContext context)
@@ -19,6 +19,11 @@ namespace Sample.Datahub.Repository
             var team = _context.Teams.FirstOrDefault(t => t.Id == id);
             return team;
         }
-
+        public Team Create(Team team)
+        {
+            _context.Teams.Add(team);
+            _context.SaveChanges();
+            return team;
+        }
     }
 }
