@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Sample.Services.DTOs;
 using Sample.Services.Interfaces;
 
 namespace Sample.Api.Controllers
@@ -24,6 +25,16 @@ namespace Sample.Api.Controllers
         {
             var employee = _employeeServices.GetById(id);
             return Ok(employee);
+        }
+        [HttpPost]
+        public IActionResult Create([FromBody] AddEmployeeDTO Request)
+        {
+            var response = _employeeServices.Create(Request);
+            if (response == null)
+            {
+                return NotFound();
+            }
+            return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Sample.Datahub.Repository;
+﻿using Sample.Datahub.Models.Domain;
+using Sample.Datahub.Repository;
 using Sample.Services.DTOs;
 using Sample.Services.Interfaces;
 
@@ -7,9 +8,11 @@ namespace Sample.Services.BusinessLogic
     public class EmployeeServices : IEmployeeServices
     {
         private readonly IEmployeeData _data;
-        public EmployeeServices(IEmployeeData data)
+        private readonly IBranchData _branchData;
+        public EmployeeServices(IEmployeeData data, IBranchData branchdata)
         {
             _data = data;
+            _branchData = branchdata;
         }
         public List<EmpolyeeDTO> Get()
         {
@@ -40,5 +43,31 @@ namespace Sample.Services.BusinessLogic
             };
             return employee;
         }
+        public EmpolyeeDTO Create(AddEmployeeDTO input)
+        {
+            var branchid = _branchData.GetBranchIdByCode(input.BranchCode);
+            if (branchid != null)
+            {
+                var employee = new Employee()
+                {
+                    Name = input.Name,
+                    Address = input.Address,
+                    EmployeeImageUrl = input.EmployeeImageUrl,
+                    BranchId = branchid.Value,
+                    TeamId = new Guid()
+                };
+                employee = _data.Create(employee);
+                var output = new EmpolyeeDTO()
+                {
+                    Name = employee.Name,
+                    Address = employee.Address,
+                    EmployeeImageUrl = employee.EmployeeImageUrl
+                };
+                return output;
+            }
+            return null;
+           
+        }
     }
+    
 }

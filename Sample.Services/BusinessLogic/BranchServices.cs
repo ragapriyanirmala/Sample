@@ -1,4 +1,5 @@
-﻿using Sample.Datahub.Repository;
+﻿using Sample.Datahub.Models.Domain;
+using Sample.Datahub.Repository;
 using Sample.Services.DTOs;
 using Sample.Services.Interfaces;
 
@@ -38,6 +39,23 @@ namespace Sample.Services.BusinessLogic
                 BranchImageUrl = branchdata.BranchImageUrl
             };
             return branch;
+        }
+        public BranchDTO Create(AddBranchDTO input)
+        {
+            var branch = new Branch()
+            {
+                Name = input.Name,
+                Code = input.Code,
+                BranchImageUrl = input.BranchImageurl
+            };
+            branch = _data.Create(branch);
+            var output = new BranchDTO()
+            {
+                Name = branch.Name,
+                Code = branch.Code,
+                BranchImageUrl = branch.BranchImageUrl
+            };
+            return output;
         }
     }
 }

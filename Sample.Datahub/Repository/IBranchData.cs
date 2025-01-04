@@ -6,5 +6,7 @@ namespace Sample.Datahub.Repository
     {
         List<Branch> GetBranchDatas();
         Branch GetById(Guid id);
+        Branch Create(Branch branch);
+        Guid? GetBranchIdByCode(string code);
     }
 }

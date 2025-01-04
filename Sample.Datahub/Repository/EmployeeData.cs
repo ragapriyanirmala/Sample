@@ -18,10 +18,15 @@ namespace Sample.Datahub.Repository
         {
             var employee = _context.Employees.FirstOrDefault(x => x.Id == id);
             //var employee = _context.Employees.Find(id);
-           // var employee = _context.Employees.Where(x => x.Id == id);
-           return employee;
+            // var employee = _context.Employees.Where(x => x.Id == id);
+            return employee;
         }
-       
+        public Employee Create(Employee employee)
+        {
+            _context.Employees.Add(employee);
+            _context.SaveChanges();
+            return employee;
+        }
 
-    }
+   }
 }

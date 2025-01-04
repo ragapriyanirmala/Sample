@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Sample.Services.DTOs;
 using Sample.Services.Interfaces;
 
 namespace Sample.Api.Controllers
@@ -25,6 +26,12 @@ namespace Sample.Api.Controllers
         {
             var branch = _branchServices.GetById(id);
             return Ok(branch);
+        }
+        [HttpPost]
+        public IActionResult Create([FromBody] AddBranchDTO request)
+        {
+            var response = _branchServices.Create(request);
+            return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
         }
     }
 }
