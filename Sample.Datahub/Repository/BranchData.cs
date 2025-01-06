@@ -26,20 +26,25 @@ namespace Sample.Datahub.Repository
         {
             _context.Branches.Add(branch);
             _context.SaveChanges();
-           return branch;
+            return branch;
         }
         public Guid? GetBranchIdByCode(string code)
         {
 
             var branch = _context.Branches.FirstOrDefault(x => x.Code == code);
             if (branch != null)
-            { 
+            {
                 return branch.Id;
             }
             return null;
-           
+
+        }
+        public Branch Update(Branch branch)
+        {
+            _context.SaveChanges();
+            return branch;
         }
         #endregion
-      
+
     }
 }

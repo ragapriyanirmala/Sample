@@ -33,5 +33,16 @@ namespace Sample.Api.Controllers
             var response = _branchServices.Create(request);
             return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
         }
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public IActionResult Update([FromRoute] Guid id, [FromBody] AddBranchDTO request)
+        {
+            var response = _branchServices.Update(id, request);
+            if (response == null)
+            {
+                return NotFound();
+            }
+            return Ok(response);
+        }
     }
 }

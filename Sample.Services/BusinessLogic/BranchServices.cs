@@ -51,6 +51,27 @@ namespace Sample.Services.BusinessLogic
             branch = _data.Create(branch);
             var output = new BranchDTO()
             {
+                Id = branch.Id,
+                Name = branch.Name,
+                Code = branch.Code,
+                BranchImageUrl = branch.BranchImageUrl
+            };
+            return output;
+        }
+        public BranchDTO? Update(Guid id, AddBranchDTO input)
+        {
+            var branch = _data.GetById(id);
+            if (branch == null)
+            {
+                return null;
+            }
+            branch.Name = input.Name;
+            branch.Code = input.Code;
+            branch.BranchImageUrl = input.BranchImageurl;
+            branch = _data.Update(branch);
+            var output = new BranchDTO()
+            {
+                Id = branch.Id,
                 Name = branch.Name,
                 Code = branch.Code,
                 BranchImageUrl = branch.BranchImageUrl

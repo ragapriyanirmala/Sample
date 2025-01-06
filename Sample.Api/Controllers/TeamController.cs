@@ -30,9 +30,20 @@ namespace Sample.Api.Controllers
         }
         [HttpPost]
         public IActionResult Create([FromBody] AddTeamDTO request)
-       {
+        {
             var response = _teamServices.Create(request);
-            return CreatedAtAction(nameof(GetById), new { id = response.Id },response);
+            return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
+        }
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public IActionResult Update([FromRoute] Guid id, [FromBody] AddTeamDTO request)
+        {
+            var team = _teamServices.Update(id, request);
+            if (team == null)
+            {
+                return NotFound();
+            }
+            return Ok(team);
         }
     }
 }

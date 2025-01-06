@@ -7,5 +7,6 @@ namespace Sample.Services.Interfaces
         List<BranchDTO> Get();
         BranchDTO GetById(Guid id);
         BranchDTO Create(AddBranchDTO input);
+        BranchDTO? Update(Guid id, AddBranchDTO input);
     }
 }

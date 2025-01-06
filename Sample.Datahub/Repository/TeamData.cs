@@ -25,5 +25,21 @@ namespace Sample.Datahub.Repository
             _context.SaveChanges();
             return team;
         }
+        public Guid? GetTeamIdByName(string name)
+        {
+
+            var team = _context.Teams.FirstOrDefault(x => x.Name == name);
+            if (team != null)
+            {
+                return team.Id;
+            }
+            return null;
+
+        }
+        public Team Update(Team team)
+        {
+            _context.SaveChanges();
+            return team;
+        }
     }
 }

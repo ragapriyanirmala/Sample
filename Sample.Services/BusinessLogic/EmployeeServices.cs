@@ -9,10 +9,12 @@ namespace Sample.Services.BusinessLogic
     {
         private readonly IEmployeeData _data;
         private readonly IBranchData _branchData;
-        public EmployeeServices(IEmployeeData data, IBranchData branchdata)
+        private readonly ITeamData _teamData;
+        public EmployeeServices(IEmployeeData data, IBranchData branchdata, ITeamData teamData)
         {
             _data = data;
             _branchData = branchdata;
+            _teamData = teamData;
         }
         public List<EmpolyeeDTO> Get()
         {
@@ -46,7 +48,8 @@ namespace Sample.Services.BusinessLogic
         public EmpolyeeDTO Create(AddEmployeeDTO input)
         {
             var branchid = _branchData.GetBranchIdByCode(input.BranchCode);
-            if (branchid != null)
+            var teamid = _teamData.GetTeamIdByName(input.TeamName);
+            if (branchid != null && teamid != null)
             {
                 var employee = new Employee()
                 {
@@ -54,11 +57,12 @@ namespace Sample.Services.BusinessLogic
                     Address = input.Address,
                     EmployeeImageUrl = input.EmployeeImageUrl,
                     BranchId = branchid.Value,
-                    TeamId = new Guid()
+                    TeamId = teamid.Value
                 };
                 employee = _data.Create(employee);
                 var output = new EmpolyeeDTO()
                 {
+                    Id = employee.Id,
                     Name = employee.Name,
                     Address = employee.Address,
                     EmployeeImageUrl = employee.EmployeeImageUrl
@@ -66,8 +70,8 @@ namespace Sample.Services.BusinessLogic
                 return output;
             }
             return null;
-           
+
         }
     }
-    
+
 }

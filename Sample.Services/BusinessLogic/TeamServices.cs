@@ -50,5 +50,21 @@ namespace Sample.Services.BusinessLogic
             };
             return output;
         }
+        public TeamDTO Update(Guid id, AddTeamDTO input)
+        {
+            var team = _data.GetById(id);
+            if (team == null)
+            {
+                return null;
+            }
+            team.Name = input.Name;
+            team = _data.Update(team);
+            var output = new TeamDTO()
+            {
+                Id = team.Id,
+                Name = input.Name
+            };
+            return output;
+        }
     }
 }
