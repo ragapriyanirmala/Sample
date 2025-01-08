@@ -12,9 +12,9 @@ namespace Sample.Services.BusinessLogic
         {
             _data = data;
         }
-        public List<BranchDTO> Get()
+        public async Task<List<BranchDTO>> Get()
         {
-            var branchdata = _data.GetBranchDatas();
+            var branchdata =await _data.GetBranchDatas();
             var branches = new List<BranchDTO>();
             foreach (var branch in branchdata)
             {
@@ -28,9 +28,9 @@ namespace Sample.Services.BusinessLogic
             }
             return branches;
         }
-        public BranchDTO GetById(Guid id)
+        public async Task<BranchDTO> GetById(Guid id)
         {
-            var branchdata = _data.GetById(id);
+            var branchdata =await _data.GetById(id);
             var branch = new BranchDTO()
             {
                 Id = branchdata.Id,
@@ -40,7 +40,7 @@ namespace Sample.Services.BusinessLogic
             };
             return branch;
         }
-        public BranchDTO Create(AddBranchDTO input)
+        public async Task<BranchDTO> Create(AddBranchDTO input)
         {
             var branch = new Branch()
             {
@@ -48,7 +48,7 @@ namespace Sample.Services.BusinessLogic
                 Code = input.Code,
                 BranchImageUrl = input.BranchImageurl
             };
-            branch = _data.Create(branch);
+            branch =await _data.Create(branch);
             var output = new BranchDTO()
             {
                 Id = branch.Id,
@@ -58,9 +58,9 @@ namespace Sample.Services.BusinessLogic
             };
             return output;
         }
-        public BranchDTO? Update(Guid id, AddBranchDTO input)
+        public async Task<BranchDTO?> Update(Guid id, AddBranchDTO input)
         {
-            var branch = _data.GetById(id);
+            var branch =await _data.GetById(id);
             if (branch == null)
             {
                 return null;
@@ -68,7 +68,7 @@ namespace Sample.Services.BusinessLogic
             branch.Name = input.Name;
             branch.Code = input.Code;
             branch.BranchImageUrl = input.BranchImageurl;
-            branch = _data.Update(branch);
+            branch =await _data.Update(branch);
             var output = new BranchDTO()
             {
                 Id = branch.Id,
@@ -78,9 +78,9 @@ namespace Sample.Services.BusinessLogic
             };
             return output;
         }
-        public bool Delete(Guid id)
+        public async Task<bool> Delete(Guid id)
         {
-            var branch=_data.GetById(id);
+            var branch=await _data.GetById(id);
             if(branch == null)
             {
                 return false;

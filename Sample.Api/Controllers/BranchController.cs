@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Sample.Services.DTOs;
 using Sample.Services.Interfaces;
 
@@ -15,29 +14,29 @@ namespace Sample.Api.Controllers
             _branchServices = branchServices;
         }
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var branches = _branchServices.Get();
+            var branches = await _branchServices.Get();
             return Ok(branches);
         }
         [HttpGet]
         [Route("{id:Guid}")]
-        public IActionResult GetById([FromRoute] Guid id)
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
-            var branch = _branchServices.GetById(id);
+            var branch = await _branchServices.GetById(id);
             return Ok(branch);
         }
         [HttpPost]
-        public IActionResult Create([FromBody] AddBranchDTO request)
+        public async Task<IActionResult> Create([FromBody] AddBranchDTO request)
         {
-            var response = _branchServices.Create(request);
+            var response = await _branchServices.Create(request);
             return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
         }
         [HttpPut]
         [Route("{id:Guid}")]
-        public IActionResult Update([FromRoute] Guid id, [FromBody] AddBranchDTO request)
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] AddBranchDTO request)
         {
-            var response = _branchServices.Update(id, request);
+            var response = await _branchServices.Update(id, request);
             if (response == null)
             {
                 return NotFound();
@@ -46,10 +45,10 @@ namespace Sample.Api.Controllers
         }
         [HttpDelete]
         [Route("{id:Guid}")]
-        public IActionResult Delete([FromRoute] Guid id)
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            var response = _branchServices.Delete(id);
-            if(response == false)
+            var response = await _branchServices.Delete(id);
+            if (response == false)
             {
                 return NotFound();
             }

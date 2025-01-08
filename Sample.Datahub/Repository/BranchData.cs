@@ -1,4 +1,5 @@
-﻿using Sample.Datahub.Models.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using Sample.Datahub.Models.Domain;
 
 namespace Sample.Datahub.Repository
 {
@@ -12,26 +13,26 @@ namespace Sample.Datahub.Repository
         }
         #endregion
         #region --methods
-        public List<Branch> GetBranchDatas()
+        public async Task<List<Branch>> GetBranchDatas()
         {
-            var branchdata = _context.Branches.ToList();
+            var branchdata = await _context.Branches.ToListAsync();
             return branchdata;
         }
-        public Branch GetById(Guid id)
+        public async Task<Branch> GetById(Guid id)
         {
-            var branch = _context.Branches.FirstOrDefault(x => x.Id == id);
+            var branch = await _context.Branches.FirstOrDefaultAsync(x => x.Id == id);
             return branch;
         }
-        public Branch Create(Branch branch)
+        public async Task<Branch> Create(Branch branch)
         {
-            _context.Branches.Add(branch);
-            _context.SaveChanges();
+            await _context.Branches.AddAsync(branch);
+            await _context.SaveChangesAsync();
             return branch;
         }
-        public Guid? GetBranchIdByCode(string code)
+        public async Task<Guid?> GetBranchIdByCode(string code)
         {
 
-            var branch = _context.Branches.FirstOrDefault(x => x.Code == code);
+            var branch = await _context.Branches.FirstOrDefaultAsync(x => x.Code == code);
             if (branch != null)
             {
                 return branch.Id;
@@ -39,15 +40,15 @@ namespace Sample.Datahub.Repository
             return null;
 
         }
-        public Branch Update(Branch branch)
+        public async Task<Branch> Update(Branch branch)
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return branch;
         }
-        public void Delete(Branch branch)
+        public async void Delete(Branch branch)
         {
             _context.Branches.Remove(branch);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
         #endregion
     }

@@ -45,10 +45,10 @@ namespace Sample.Services.BusinessLogic
             };
             return employee;
         }
-        public EmpolyeeDTO Create(AddEmployeeDTO input)
+        public async Task<EmpolyeeDTO> Create(AddEmployeeDTO input)
         {
-            var branchid = _branchData.GetBranchIdByCode(input.BranchCode);
-            var teamid = _teamData.GetTeamIdByName(input.TeamName);
+            var branchid =await _branchData.GetBranchIdByCode(input.BranchCode);
+            var teamid =_teamData.GetTeamIdByName(input.TeamName);
             if (branchid != null && teamid != null)
             {
                 var employee = new Employee()
@@ -78,7 +78,7 @@ namespace Sample.Services.BusinessLogic
             var employee = _data.GetById(id);
             if (branchid != null && teamid != null && employee != null)
             {
-                employee.BranchId= branchid.Value;
+                employee.BranchId= branchid.Result.Value;
                 employee.TeamId= teamid.Value;
                 employee.Name= input.Name;
                 employee.Address= input.Address;

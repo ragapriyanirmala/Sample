@@ -27,9 +27,9 @@ namespace Sample.Api.Controllers
             return Ok(employee);
         }
         [HttpPost]
-        public IActionResult Create([FromBody] AddEmployeeDTO request)
+        public async Task<IActionResult> Create([FromBody] AddEmployeeDTO request)
         {
-            var response = _employeeServices.Create(request);
+            var response = await _employeeServices.Create(request);
             if (response == null)
             {
                 return NotFound();
@@ -38,7 +38,7 @@ namespace Sample.Api.Controllers
         }
         [HttpPut]
         [Route("{id:Guid}")]
-        public IActionResult Update([FromRoute] Guid id,AddEmployeeDTO request)
+        public IActionResult Update([FromRoute] Guid id, AddEmployeeDTO request)
         {
             var employee = _employeeServices.Update(id, request);
             if (employee == null)
@@ -51,8 +51,8 @@ namespace Sample.Api.Controllers
         [Route("{id:Guid}")]
         public IActionResult Delete([FromRoute] Guid id)
         {
-            var employee= _employeeServices.Delete(id);
-            if(employee==false)
+            var employee = _employeeServices.Delete(id);
+            if (employee == false)
             {
                 return NotFound();
             }
