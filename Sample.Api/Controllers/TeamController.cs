@@ -45,5 +45,16 @@ namespace Sample.Api.Controllers
             }
             return Ok(team);
         }
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public IActionResult Delete([FromRoute] Guid id)
+        {
+            var team = _teamServices.Delete(id);
+            if(team==false)
+            {
+                return NotFound();
+            }
+            return Ok(team);
+        }
     }
 }

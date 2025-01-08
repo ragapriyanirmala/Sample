@@ -27,14 +27,36 @@ namespace Sample.Api.Controllers
             return Ok(employee);
         }
         [HttpPost]
-        public IActionResult Create([FromBody] AddEmployeeDTO Request)
+        public IActionResult Create([FromBody] AddEmployeeDTO request)
         {
-            var response = _employeeServices.Create(Request);
+            var response = _employeeServices.Create(request);
             if (response == null)
             {
                 return NotFound();
             }
             return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
+        }
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public IActionResult Update([FromRoute] Guid id,AddEmployeeDTO request)
+        {
+            var employee = _employeeServices.Update(id, request);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+            return Ok(employee);
+        }
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public IActionResult Delete([FromRoute] Guid id)
+        {
+            var employee= _employeeServices.Delete(id);
+            if(employee==false)
+            {
+                return NotFound();
+            }
+            return Ok(employee);
         }
     }
 }

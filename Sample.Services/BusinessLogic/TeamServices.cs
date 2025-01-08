@@ -66,5 +66,15 @@ namespace Sample.Services.BusinessLogic
             };
             return output;
         }
+        public bool Delete(Guid id)
+        {
+            var team = _data.GetById(id);
+            if (team == null)
+            {
+                return false;
+            }
+            _data.Delete(team);
+            return true;
+        }
     }
 }

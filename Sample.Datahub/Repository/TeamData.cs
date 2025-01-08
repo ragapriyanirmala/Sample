@@ -41,5 +41,10 @@ namespace Sample.Datahub.Repository
             _context.SaveChanges();
             return team;
         }
+        public void Delete(Team team) 
+        { 
+            _context.Teams.Remove(team);
+            _context.SaveChanges();
+        }
     }
 }

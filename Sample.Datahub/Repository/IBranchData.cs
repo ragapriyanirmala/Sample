@@ -9,5 +9,6 @@ namespace Sample.Datahub.Repository
         Branch Create(Branch branch);
         Guid? GetBranchIdByCode(string code);
         Branch Update(Branch branch);
+        void Delete(Branch branch);
     }
 }

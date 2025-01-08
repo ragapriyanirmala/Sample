@@ -27,6 +27,15 @@ namespace Sample.Datahub.Repository
             _context.SaveChanges();
             return employee;
         }
-
+        public Employee Update(Employee employee)
+        {
+            _context.SaveChanges();
+            return employee;
+        }
+        public void Delete(Employee employee) 
+        {
+            _context.Remove(employee);
+            _context.SaveChanges();
+        }
    }
 }

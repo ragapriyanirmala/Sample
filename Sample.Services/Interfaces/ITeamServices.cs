@@ -8,5 +8,6 @@ namespace Sample.Services.Interfaces
         TeamDTO GetById(Guid id);
         TeamDTO Create(AddTeamDTO input);
         TeamDTO Update(Guid id, AddTeamDTO input);
+        bool Delete(Guid id);
     }
 }

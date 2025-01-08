@@ -44,7 +44,11 @@ namespace Sample.Datahub.Repository
             _context.SaveChanges();
             return branch;
         }
+        public void Delete(Branch branch)
+        {
+            _context.Branches.Remove(branch);
+            _context.SaveChanges();
+        }
         #endregion
-
     }
 }

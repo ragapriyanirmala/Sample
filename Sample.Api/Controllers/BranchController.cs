@@ -44,5 +44,16 @@ namespace Sample.Api.Controllers
             }
             return Ok(response);
         }
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public IActionResult Delete([FromRoute] Guid id)
+        {
+            var response = _branchServices.Delete(id);
+            if(response == false)
+            {
+                return NotFound();
+            }
+            return Ok(response);
+        }
     }
 }

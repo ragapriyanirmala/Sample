@@ -7,5 +7,7 @@ namespace Sample.Services.Interfaces
         List<EmpolyeeDTO> Get();
         EmpolyeeDTO GetById(Guid id);
         EmpolyeeDTO Create(AddEmployeeDTO input);
+        EmpolyeeDTO Update(Guid id, AddEmployeeDTO input);
+        bool Delete(Guid id);
     }
 }

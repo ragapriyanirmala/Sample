@@ -70,8 +70,40 @@ namespace Sample.Services.BusinessLogic
                 return output;
             }
             return null;
-
+        }
+        public EmpolyeeDTO Update(Guid id, AddEmployeeDTO input)
+        {
+            var branchid = _branchData.GetBranchIdByCode(input.BranchCode);
+            var teamid = _teamData.GetTeamIdByName(input.TeamName);
+            var employee = _data.GetById(id);
+            if (branchid != null && teamid != null && employee != null)
+            {
+                employee.BranchId= branchid.Value;
+                employee.TeamId= teamid.Value;
+                employee.Name= input.Name;
+                employee.Address= input.Address;
+                employee.EmployeeImageUrl= input.EmployeeImageUrl;
+                employee= _data.Update(employee);
+                var output = new EmpolyeeDTO()
+                {
+                    Id = employee.Id,
+                    Name = employee.Name,
+                    Address = employee.Address,
+                    EmployeeImageUrl = employee.EmployeeImageUrl
+                };
+                return output;
+            }
+            return null;
+        }
+        public bool Delete(Guid id)
+        {
+            var employee= _data.GetById(id);
+            if (employee == null)
+            {
+                return false;
+            }
+            _data.Delete(employee);
+            return true;
         }
     }
-
 }
