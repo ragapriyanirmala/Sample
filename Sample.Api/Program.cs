@@ -4,6 +4,7 @@ using Sample.Datahub.Models.Domain;
 using Sample.Datahub.Repository;
 using Sample.Services.BusinessLogic;
 using Sample.Services.Interfaces;
+using Sample.Services.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ builder.Services.AddTransient<IEmployeeServices, EmployeeServices>();
 builder.Services.AddTransient<ITeamServices,TeamServices>();
 builder.Services.AddTransient<IBranchServices, BranchServices>();
 
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

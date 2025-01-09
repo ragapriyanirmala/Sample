@@ -1,4 +1,5 @@
-﻿using Sample.Datahub.Models.Domain;
+﻿using AutoMapper;
+using Sample.Datahub.Models.Domain;
 using Sample.Datahub.Repository;
 using Sample.Services.DTOs;
 using Sample.Services.Interfaces;
@@ -8,25 +9,15 @@ namespace Sample.Services.BusinessLogic
     public class BranchServices : IBranchServices
     {
         private readonly IBranchData _data;
-        public BranchServices(IBranchData data)
+        private readonly IMapper _mapper;
+        public BranchServices(IBranchData data,IMapper mapper)
         {
             _data = data;
+            _mapper = mapper;
         }
         public async Task<List<BranchDTO>> Get()
         {
-            var branchdata =await _data.GetBranchDatas();
-            var branches = new List<BranchDTO>();
-            foreach (var branch in branchdata)
-            {
-                branches.Add(new BranchDTO()
-                {
-                    Id = branch.Id,
-                    Name = branch.Name,
-                    Code = branch.Code,
-                    BranchImageUrl = branch.BranchImageUrl
-                });
-            }
-            return branches;
+            return _mapper.Map<List<BranchDTO>>(await _data.GetBranchDatas());
         }
         public async Task<BranchDTO> GetById(Guid id)
         {

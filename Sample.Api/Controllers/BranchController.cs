@@ -16,8 +16,7 @@ namespace Sample.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var branches = await _branchServices.Get();
-            return Ok(branches);
+            return Ok(await _branchServices.Get());
         }
         [HttpGet]
         [Route("{id:Guid}")]
