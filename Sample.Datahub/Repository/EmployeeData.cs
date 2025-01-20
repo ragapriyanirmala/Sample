@@ -1,4 +1,5 @@
-﻿using Sample.Datahub.Models.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using Sample.Datahub.Models.Domain;
 
 namespace Sample.Datahub.Repository
 {
@@ -11,7 +12,7 @@ namespace Sample.Datahub.Repository
         }
         public List<Employee> Get()
         {
-            var employees = _context.Employees.ToList();
+            var employees = _context.Employees.Include("Branch").Include("Team").ToList();
             return employees;
         }
         public Employee? GetById(Guid id)

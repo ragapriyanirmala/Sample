@@ -13,6 +13,7 @@ namespace Sample.Services.Mappings
                 .ReverseMap();
             CreateMap<Employee, EmpolyeeDTO>().ReverseMap();
             CreateMap<Branch,BranchDTO>().ReverseMap();
+            CreateMap<Team, TeamDTO>().ReverseMap();
         }
     }
 }

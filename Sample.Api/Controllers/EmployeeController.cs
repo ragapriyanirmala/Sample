@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Sample.Api.CustomActionFilters;
 using Sample.Services.DTOs;
 using Sample.Services.Interfaces;
 
@@ -29,15 +30,23 @@ namespace Sample.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddEmployeeDTO request)
         {
-            var response = await _employeeServices.Create(request);
-            if (response == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                var response = await _employeeServices.Create(request);
+                if (response == null)
+                {
+                    return NotFound();
+                }
+                return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
             }
-            return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
         [HttpPut]
         [Route("{id:Guid}")]
+        [ValidateModel]
         public IActionResult Update([FromRoute] Guid id, AddEmployeeDTO request)
         {
             var employee = _employeeServices.Update(id, request);
