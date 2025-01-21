@@ -20,9 +20,34 @@ namespace Sample.Services.BusinessLogic
             _teamData = teamData;
             _mapper = mapper;
         }
-        public List<EmpolyeeDTO> Get()
+        public List<EmpolyeeDTO> Get(string? filteron = null, string? filterquery = null,
+             string? sortby = null, bool isascending = true)
         {
-            return _mapper.Map<List<EmpolyeeDTO>>(_data.Get());
+            var employees = _data.Get();
+            if (!string.IsNullOrWhiteSpace(filteron) && !string.IsNullOrWhiteSpace(filterquery))
+            {
+                if (filteron.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    employees = employees.Where(x => x.Name.ToLower().Contains(filterquery.ToLower())).ToList();
+                }
+                if (filteron.Equals("BranchName", StringComparison.OrdinalIgnoreCase))
+                {
+                    employees = employees.Where(x => x.Branch.Name.ToLower().Contains(filterquery.ToLower())).ToList();
+                }                
+            }
+            if (!string.IsNullOrWhiteSpace(sortby))
+            {
+                if (sortby.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    //employees = isascending ? employees.OrderBy(x => x.Name).ToList() :
+                    //    employees.OrderByDescending(x => x.Name).ToList();
+                    if (isascending)
+                        employees = employees.OrderBy(x => x.Name).ToList();
+                    else
+                        employees = employees.OrderByDescending(x => x.Name).ToList();
+                }
+            }
+            return _mapper.Map<List<EmpolyeeDTO>>(employees);
         }
         public EmpolyeeDTO GetById(Guid id)
         {

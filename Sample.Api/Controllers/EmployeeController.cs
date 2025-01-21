@@ -15,9 +15,10 @@ namespace Sample.Api.Controllers
             _employeeServices = employeeServices;
         }
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] string? filteron, [FromQuery] string? filterquery,
+            [FromQuery] string? sortby, [FromQuery] bool? isascending)
         {
-            var employees = _employeeServices.Get();
+            var employees = _employeeServices.Get(filteron, filterquery, sortby, isascending ?? true);
             return Ok(employees);
         }
         [HttpGet]
