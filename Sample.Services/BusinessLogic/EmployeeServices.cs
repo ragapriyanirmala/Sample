@@ -21,7 +21,7 @@ namespace Sample.Services.BusinessLogic
             _mapper = mapper;
         }
         public List<EmpolyeeDTO> Get(string? filteron = null, string? filterquery = null,
-             string? sortby = null, bool isascending = true)
+             string? sortby = null, bool isascending = true, int pagenumber = 1, int pagesize = 10)
         {
             var employees = _data.Get();
             if (!string.IsNullOrWhiteSpace(filteron) && !string.IsNullOrWhiteSpace(filterquery))
@@ -33,7 +33,7 @@ namespace Sample.Services.BusinessLogic
                 if (filteron.Equals("BranchName", StringComparison.OrdinalIgnoreCase))
                 {
                     employees = employees.Where(x => x.Branch.Name.ToLower().Contains(filterquery.ToLower())).ToList();
-                }                
+                }
             }
             if (!string.IsNullOrWhiteSpace(sortby))
             {
@@ -47,6 +47,8 @@ namespace Sample.Services.BusinessLogic
                         employees = employees.OrderByDescending(x => x.Name).ToList();
                 }
             }
+            var skipresults = (pagenumber - 1) * pagesize;
+            employees = employees.Skip(skipresults).Take(pagesize).ToList();
             return _mapper.Map<List<EmpolyeeDTO>>(employees);
         }
         public EmpolyeeDTO GetById(Guid id)

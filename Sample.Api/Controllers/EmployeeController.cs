@@ -16,9 +16,10 @@ namespace Sample.Api.Controllers
         }
         [HttpGet]
         public IActionResult Get([FromQuery] string? filteron, [FromQuery] string? filterquery,
-            [FromQuery] string? sortby, [FromQuery] bool? isascending)
+            [FromQuery] string? sortby, [FromQuery] bool? isascending,
+            [FromQuery] int pagenumber = 1, [FromQuery] int pagesize=10)
         {
-            var employees = _employeeServices.Get(filteron, filterquery, sortby, isascending ?? true);
+            var employees = _employeeServices.Get(filteron, filterquery, sortby, isascending ?? true,pagenumber,pagesize);
             return Ok(employees);
         }
         [HttpGet]
