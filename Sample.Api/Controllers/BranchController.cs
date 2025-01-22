@@ -14,9 +14,11 @@ namespace Sample.Api.Controllers
             _branchServices = branchServices;
         }
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] string? filteron, [FromQuery] string? filterquery,
+            [FromQuery] string? sortby, [FromQuery] bool? isascending = true)
         {
-            return Ok(await _branchServices.Get());
+            var branches = await _branchServices.Get(filteron, filterquery, sortby, isascending ?? true);
+            return Ok(branches);
         }
         [HttpGet]
         [Route("{id:Guid}")]

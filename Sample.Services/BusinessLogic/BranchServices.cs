@@ -10,18 +10,39 @@ namespace Sample.Services.BusinessLogic
     {
         private readonly IBranchData _data;
         private readonly IMapper _mapper;
-        public BranchServices(IBranchData data,IMapper mapper)
+        public BranchServices(IBranchData data, IMapper mapper)
         {
             _data = data;
             _mapper = mapper;
         }
-        public async Task<List<BranchDTO>> Get()
+        public async Task<List<BranchDTO>> Get(string? filteron = null, string? filterquery = null,
+             string? sortby = null, bool isascending = true)
         {
-            return _mapper.Map<List<BranchDTO>>(await _data.GetBranchDatas());
+            var branches = await _data.GetBranchDatas();
+            if (!string.IsNullOrWhiteSpace(filteron) && !string.IsNullOrWhiteSpace(filterquery))
+            {
+                if (filteron.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    branches = branches.Where(x => x.Name.ToLower().Contains(filterquery.ToLower())).ToList();
+                }
+                if (filteron.Equals("Code", StringComparison.OrdinalIgnoreCase))
+                {
+                    branches = branches.Where(x => x.Code.ToLower().Contains(filterquery.ToLower())).ToList();
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(sortby))
+            {
+                if (sortby.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    branches = isascending ? branches.OrderBy(x => x.Name).ToList()
+                        : branches.OrderByDescending(x => x.Name).ToList();
+                }
+            }
+            return _mapper.Map<List<BranchDTO>>(branches);
         }
         public async Task<BranchDTO> GetById(Guid id)
         {
-            var branchdata =await _data.GetById(id);
+            var branchdata = await _data.GetById(id);
             var branch = new BranchDTO()
             {
                 Id = branchdata.Id,
@@ -39,7 +60,7 @@ namespace Sample.Services.BusinessLogic
                 Code = input.Code,
                 BranchImageUrl = input.BranchImageurl
             };
-            branch =await _data.Create(branch);
+            branch = await _data.Create(branch);
             var output = new BranchDTO()
             {
                 Id = branch.Id,
@@ -51,7 +72,7 @@ namespace Sample.Services.BusinessLogic
         }
         public async Task<BranchDTO?> Update(Guid id, AddBranchDTO input)
         {
-            var branch =await _data.GetById(id);
+            var branch = await _data.GetById(id);
             if (branch == null)
             {
                 return null;
@@ -59,7 +80,7 @@ namespace Sample.Services.BusinessLogic
             branch.Name = input.Name;
             branch.Code = input.Code;
             branch.BranchImageUrl = input.BranchImageurl;
-            branch =await _data.Update(branch);
+            branch = await _data.Update(branch);
             var output = new BranchDTO()
             {
                 Id = branch.Id,
@@ -71,8 +92,8 @@ namespace Sample.Services.BusinessLogic
         }
         public async Task<bool> Delete(Guid id)
         {
-            var branch=await _data.GetById(id);
-            if(branch == null)
+            var branch = await _data.GetById(id);
+            if (branch == null)
             {
                 return false;
             }
