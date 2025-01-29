@@ -6,7 +6,7 @@ namespace Sample.Datahub
 {
     public class SampleDbContext:DbContext
     {
-        public SampleDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions) 
+        public SampleDbContext(DbContextOptions<SampleDbContext> dbContextOptions) : base(dbContextOptions) 
         {
                 
         }

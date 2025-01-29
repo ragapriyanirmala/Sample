@@ -17,8 +17,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddDbContext<SampleDbContext>(options => 
 options.UseSqlServer(builder.Configuration.GetConnectionString("SampleConnectionString")));
+
+builder.Services.AddDbContext<AuthDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("AuthConnectionString"))); 
+
 builder.Services.AddTransient<IEmployeeData, EmployeeData>();
 builder.Services.AddTransient<IBranchData, BranchData>();
 builder.Services.AddTransient<ITeamData, TeamData>();

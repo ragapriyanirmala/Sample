@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Sample.Services.DTOs;
 using Sample.Services.Interfaces;
 
@@ -6,6 +7,7 @@ namespace Sample.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BranchController : ControllerBase
     {
         private readonly IBranchServices _branchServices;
