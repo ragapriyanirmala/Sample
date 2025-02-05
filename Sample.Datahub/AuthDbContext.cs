@@ -25,11 +25,21 @@ namespace Sample.Datahub
             {
                 new IdentityRole
                 {
-                    
-                }
+                    Id = readerRoleId,
+                    Name = "Reader",
+                    ConcurrencyStamp = readerRoleId,
+                    NormalizedName = "Reader".ToUpper()
+                },
+                new IdentityRole
+                {
+                    Id = writerRoleId,
+                    Name = "Writer",
+                    ConcurrencyStamp = writerRoleId,
+                    NormalizedName = "Writer".ToUpper()
+                },
             };
 
-
+            builder.Entity<IdentityRole>().HasData(roles);
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
