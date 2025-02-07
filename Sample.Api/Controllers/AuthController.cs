@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Sample.Datahub.Repository;
 using Sample.Services.DTOs;
+using Sample.Services.Interfaces;
 
 namespace Sample.Api.Controllers
 {
@@ -9,10 +11,12 @@ namespace Sample.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        public readonly UserManager<IdentityUser> _userManager;
-        public AuthController(UserManager<IdentityUser> userManager)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ITokenRepository _tokenRepository;
+        public AuthController(UserManager<IdentityUser> userManager, ITokenRepository tokenRepository)
         {
             _userManager = userManager;
+            _tokenRepository = tokenRepository;
         }
         [HttpPost]
         [Route("Register")]
@@ -36,6 +40,27 @@ namespace Sample.Api.Controllers
                 }
             }
             return BadRequest("Something Went Wrong");
+        }
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO input)
+        {
+            var user = await _userManager.FindByEmailAsync(input.UserName);
+            if (user != null)
+            {
+                var result = await _userManager.CheckPasswordAsync(user, input.Password);
+                if (result)
+                {
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles != null)
+                    {
+                        var jwttoken = _tokenRepository.CreateJWTToken(user, roles.ToList());
+                        var response = new LoginResponseDTO { JwtToken = jwttoken };
+                        return Ok(response);
+                    }
+                }
+            }
+            return BadRequest("User Name or Password are incorrect");
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Sample.Datahub;
 using Sample.Datahub.Models.Domain;
@@ -10,6 +11,7 @@ using Sample.Datahub.Repository;
 using Sample.Services.BusinessLogic;
 using Sample.Services.Interfaces;
 using Sample.Services.Mappings;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,20 +20,48 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "sample api", Version = "v1" });
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                },
+                Scheme = "Oauth2",
+                Name = JwtBearerDefaults.AuthenticationScheme,
+                In = ParameterLocation.Header
+            },
+            new List<string>()
+        }
+    });
+});
 
-builder.Services.AddDbContext<SampleDbContext>(options => 
+builder.Services.AddDbContext<SampleDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("SampleConnectionString")));
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("AuthConnectionString"))); 
+options.UseSqlServer(builder.Configuration.GetConnectionString("AuthConnectionString")));
 
 builder.Services.AddTransient<IEmployeeData, EmployeeData>();
 builder.Services.AddTransient<IBranchData, BranchData>();
 builder.Services.AddTransient<ITeamData, TeamData>();
 builder.Services.AddTransient<IEmployeeServices, EmployeeServices>();
-builder.Services.AddTransient<ITeamServices,TeamServices>();
+builder.Services.AddTransient<ITeamServices, TeamServices>();
 builder.Services.AddTransient<IBranchServices, BranchServices>();
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 

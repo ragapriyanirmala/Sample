@@ -16,6 +16,7 @@ namespace Sample.Api.Controllers
             _branchServices = branchServices;
         }
         [HttpGet]
+        [Authorize(Roles ="Reader")]
         public async Task<IActionResult> Get([FromQuery] string? filteron, [FromQuery] string? filterquery,
             [FromQuery] string? sortby, [FromQuery] bool? isascending = true)
         {
@@ -24,12 +25,14 @@ namespace Sample.Api.Controllers
         }
         [HttpGet]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var branch = await _branchServices.GetById(id);
             return Ok(branch);
         }
         [HttpPost]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Create([FromBody] AddBranchDTO request)
         {
             var response = await _branchServices.Create(request);
@@ -37,6 +40,7 @@ namespace Sample.Api.Controllers
         }
         [HttpPut]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] AddBranchDTO request)
         {
             var response = await _branchServices.Update(id, request);
@@ -48,6 +52,7 @@ namespace Sample.Api.Controllers
         }
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var response = await _branchServices.Delete(id);
