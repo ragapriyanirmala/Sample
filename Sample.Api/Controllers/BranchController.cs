@@ -23,7 +23,7 @@ namespace Sample.Api.Controllers
         public async Task<IActionResult> Get([FromQuery] string? filteron, [FromQuery] string? filterquery,
             [FromQuery] string? sortby, [FromQuery] bool? isascending = true)
         {
-            //_logger.LogInformation("Get Branches is invoked");
+            _logger.LogInformation("Get Branches is invoked");
             //_logger.LogWarning("Warning");
             //_logger.LogError("Error");
             //throw new Exception("This is a test exception");
